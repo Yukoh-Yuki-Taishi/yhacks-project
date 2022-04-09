@@ -27,7 +27,7 @@ class TextAnalyzer():
             if(token.pos_ in self._pos_tag):
                 result.append(token)
         result.sort(key=lambda x: x.vector_norm, reverse=True)
-        return list(set(result[:n]))
+        return list(set([w.text for w in result[:n]]))
 
     def get_connected_keywords(self, n=10):
         self.nlp.add_pipe("textrank")
@@ -50,13 +50,11 @@ class TextAnalyzer():
 
     def run(self):
         kw = self.get_keywords(n=10)
-        return kw
+        syn = self.find_synonym_list(kw)
+        print(syn)
 
 
 if __name__ == "__main__":
     t = TextAnalyzer()
-    # t.run()
-    # print(t._find_synonym("word"))
-    print(t.find_synonym_list(["word", "bible"]))
-
+    t.run()
 
