@@ -6,7 +6,7 @@ import { Link } from "react-router-dom";
 
 const Voice = () => {
   const [message, setMessage] = useState('');
-  const [ret, setRet] = useState("hello");
+  const [ret, setRet] = useState("");
 
   const commands = [
     {
@@ -67,7 +67,7 @@ const Voice = () => {
   // send(queryObj);
 
   return (
-    <div>
+    <div style={{background: "#E4899B"}}>
       <div>
         {/* <Link to="/">Restart Meeting</Link> */}
         <Link to="/suggestions">
@@ -96,6 +96,7 @@ const Voice = () => {
         {message}
         <br />
         {ret}
+        <img src={"https://mir-s3-cdn-cf.behance.net/project_modules/max_1200/7ec86336581871.57215c53a5383.gif"}/>
       </div>
       <div>
         <span>{transcript}</span>

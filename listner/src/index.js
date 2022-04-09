@@ -6,9 +6,11 @@ import reportWebVitals from './reportWebVitals';
 import { BrowserRouter } from "react-router-dom";
 
 ReactDOM.render(
+  <div style= {{background: "#E4899B", height: "100%", minHeight: "100vh", margin: 0, padding: 0}} >
   <BrowserRouter>
     <App />
-  </BrowserRouter>,
+  </BrowserRouter>
+  </div>,
   document.getElementById('root')
 );
 

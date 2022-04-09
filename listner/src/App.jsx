@@ -9,7 +9,7 @@ import { Routes, Route } from "react-router-dom";
 
 function App() {
   return (
-    <div className="App">
+    <div className="App" style= {{background: "#E4899B", height: "100%", minHeight: "100vh"}} >
       <Routes>
         <Route path="/" element={ <StartPage/> } /> 
         <Route path="/voice" element={ <Voice/>  } />
