@@ -7,9 +7,10 @@ import Final from './Components/Final/Final';
 
 import { Routes, Route } from "react-router-dom";
 
+
 function App() {
   return (
-    <div className="App" style= {{background: "#E4899B", height: "100%", minHeight: "100vh"}} >
+    <div className="App" >
       <Routes>
         <Route path="/" element={ <StartPage/> } /> 
         <Route path="/voice" element={ <Voice/>  } />

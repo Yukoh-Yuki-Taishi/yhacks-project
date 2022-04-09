@@ -69,6 +69,7 @@ const Voice = () => {
 
   return (
     <div style={{background: "#E4899B"}}>
+      <link href="https://fonts.googleapis.com/css2?family=Kalam:wght@700&family=Sriracha&display=swap" rel="stylesheet"/>
       <div>
         {/* <Link to="/">Restart Meeting</Link> */}
         <Link to="/suggestions">
@@ -87,7 +88,8 @@ const Voice = () => {
         <div>
           <button type="button" onClick={resetTranscript}>RESET TRANSCRIPT</button>
           <button type="button" onClick={listenContinuously}>Listen</button>
-          <Link to="/">
+          <Link to= "/final" state = {finalTranscript}>
+          {/* <Link to= "/final"> */}
             <button type="button" onClick={SpeechRecognition.stopListening}>END MEETING</button>
           </Link>
           <button type="button" onClick={() => send(finalTranscript)}>Send</button>
