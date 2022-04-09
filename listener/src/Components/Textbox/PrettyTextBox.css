@@ -1,11 +1,12 @@
 .field {
     width: 80%;
     margin: auto;
-    height: 56px;
+    height: fit-content;
     border-radius: 4px;
     position: relative;
     background-color: rgba(255,255,255,0.3);
     transition: 0.3s all;
+    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
   }
   .field:hover {
     background-color: rgba(255, 255, 255, 0.45);
