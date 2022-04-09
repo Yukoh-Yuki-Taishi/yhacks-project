@@ -18,4 +18,4 @@ def summarize_txt(txt, ratio=False, nwords=False):
 
 if __name__ == "__main__":
     with open("input.txt") as f:
-        txt = ''.join(f.readlines())
+        txt = ' '.join(f.readlines())
