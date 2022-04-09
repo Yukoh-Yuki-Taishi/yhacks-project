@@ -4,12 +4,18 @@ from string import punctuation
 import pytextrank
 from nltk.corpus import wordnet
 import nltk
-# from monkeylearn import MonkeyLearn
+from gensim.models import KeyedVectors
+# from sklearn.metrics.pairwise import cosine_similarity
+import os
+import warnings
+
+#os.environ["SPACY_WARNING_IGNORE"] = "W008"
+#warnings.filterwarnings("ignore", message=r"\[W008\]", category=UserWarning)
 # nltk.download('omw-1.4')
 
 
 class TextAnalyzer():
-    def __init__(self, model="en_core_web_sm", txt=None):
+    def __init__(self, model="en_core_web_lg", txt=None):
         self.nlp = spacy.load(model)
         if not txt:
             with open("input.txt") as f:
@@ -17,9 +23,11 @@ class TextAnalyzer():
         else:
             self.txt = txt
         self._pos_tag = ['PROPN', 'ADJ', 'NOUN']
+        self.orig_doc = self.nlp(self.txt)
 
     def get_keywords(self, n):
         result = []
+
         doc = self.nlp(self.txt.lower())
         for token in doc:
             if(token.text in self.nlp.Defaults.stop_words or token.text in punctuation):
@@ -48,13 +56,33 @@ class TextAnalyzer():
             synonyms.extend(res)
         return synonyms
 
+    def get_similarity(self, orig, phrases, nwords=None):
+        phrase_similarity = []
+
+        for phrase in phrases:
+            # doc1 = self.nlp(' '.join(orig))
+            doc2 = self.nlp(phrase)
+            p = doc1.similarity(doc2)
+
+            if p > 0.01:
+                phrase_similarity.append([phrase, p])
+        
+        phrase_similarity.sort(key=lambda x: x[1], reverse=True)
+
+        if nwords and nwords < len(phrase_similarity):
+            phrase_similarity = phrase_similarity[:nwords]
+        return phrase_similarity
+
     def run(self):
         kw = self.get_keywords(n=10)
+        print(kw)
         syn = self.find_synonym_list(kw)
         print(syn)
+        return self.get_similarity(kw, syn)
 
 
 if __name__ == "__main__":
     t = TextAnalyzer()
-    t.run()
+    output = t.run()
+    print(output)
 
