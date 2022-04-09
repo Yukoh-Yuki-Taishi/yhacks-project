@@ -50,9 +50,7 @@ class TextAnalyzer():
 
     def run(self):
         kw = self.get_keywords(n=10)
-        print(kw)
-        syn = self.find_synonym_list(kw)
-        print(syn)
+        return kw
 
 
 if __name__ == "__main__":
@@ -60,5 +58,5 @@ if __name__ == "__main__":
     # t.run()
     # print(t._find_synonym("word"))
     print(t.find_synonym_list(["word", "bible"]))
-    
+
 
