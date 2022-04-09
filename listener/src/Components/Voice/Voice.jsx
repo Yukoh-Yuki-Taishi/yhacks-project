@@ -63,21 +63,38 @@ const Voice = () => {
       );
   }
 
-  // const summarize = (t) => {
-  //   SpeechRecognition.stopListening();
+  const summarize = (t) => {
+    SpeechRecognition.stopListening();
 
-  //   const toSend = { transcript: t };
-  //   axios.post('http://127.0.0.1:5000/summarize', toSend)
-  //     .then((response) => {
-  //       var result = response.data.Result;
-  //       setRet(result)
-  //       // console.log(result)
-  //     },
-  //       (error) => {
-  //         console.log(error);
-  //       }
-  //     );
-  // }
+    const toSend = { transcript: t };
+    axios.post('http://127.0.0.1:5000/summarize', toSend)
+      .then((response) => {
+        var result = response.data.Result;
+        setRet(result)
+        console.log(result)
+      },
+        (error) => {
+          console.log(error);
+        }
+      );
+  }
+
+  const suggest = (t) => {
+    // DELETE THIS LATER
+    SpeechRecognition.stopListening();
+
+    const toSend = { transcript: t };
+    axios.post('http://127.0.0.1:5000/suggest', toSend)
+      .then((response) => {
+        var result = response.data.Result;
+        setRet(result)
+        console.log(result)
+      },
+        (error) => {
+          console.log(error);
+        }
+      );
+  }
 
   const queryObj = { transcript: 'Yuki' };
   // send(queryObj);
@@ -103,10 +120,13 @@ const Voice = () => {
         <div>
           <button type="button" onClick={resetTranscript}>RESET TRANSCRIPT</button>
           <button type="button" onClick={listenContinuously}>Listen</button>
-          <Link to="/">
+          <Link to="/final">
             <button type="button" onClick={SpeechRecognition.stopListening}>END MEETING</button>
           </Link>
+          <button type="button" onClick={() => summarize(finalTranscript)}>Summarize</button>
           <button type="button" onClick={() => send(finalTranscript)}>Send</button>
+          <button type="button" onClick={() => suggest(finalTranscript)}>GET SUGGESTIONS HERE</button>
+
         </div>
       </div>
       <div>
