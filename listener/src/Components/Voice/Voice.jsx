@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import SpeechRecognition, { useSpeechRecognition } from 'react-speech-recognition';
 import axios from 'axios';
 import { Link } from "react-router-dom";
-
+import './Voice.css';
 
 const Voice = () => {
   const [message, setMessage] = useState('');
@@ -65,6 +65,7 @@ const Voice = () => {
 
   const queryObj = { transcript: 'Yuki' };
   // send(queryObj);
+  listenContinuously();
 
   return (
     <div style={{background: "#E4899B"}}>
@@ -96,6 +97,8 @@ const Voice = () => {
         {message}
         <br />
         {ret}
+        <br />
+        <p className = "listening">Listening...</p>
         <img src={"https://mir-s3-cdn-cf.behance.net/project_modules/max_1200/7ec86336581871.57215c53a5383.gif"}/>
       </div>
       <div>
