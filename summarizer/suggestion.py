@@ -1,15 +1,23 @@
 import spacy
+import yake
 from collections import Counter
 from string import punctuation
 import pytextrank
 from nltk.corpus import wordnet
 import nltk
-# from monkeylearn import MonkeyLearn
+from gensim.models import KeyedVectors
+from gensim.summarization import keywords
+# from sklearn.metrics.pairwise import cosine_similarity
+import os
+import warnings
+
+os.environ["SPACY_WARNING_IGNORE"] = "W008"
+warnings.filterwarnings("ignore", message=r"\[W008\]", category=UserWarning)
 # nltk.download('omw-1.4')
 
 
 class TextAnalyzer():
-    def __init__(self, model="en_core_web_sm", txt=None):
+    def __init__(self, model="en_core_web_lg", txt=None, level=1):
         self.nlp = spacy.load(model)
         if not txt:
             with open("input.txt") as f:
@@ -17,9 +25,18 @@ class TextAnalyzer():
         else:
             self.txt = txt
         self._pos_tag = ['PROPN', 'ADJ', 'NOUN']
+        self.orig_doc = self.nlp(self.txt)
+        self.language = "en"
+        if level == 1:
+            self.thresh = 0.1
+        if level == 2:
+            self.thresh = 0.01
+        else:
+            self.thresh = 0.005
 
-    def get_keywords(self, n):
+    def get_keywords_spacy(self, n):
         result = []
+
         doc = self.nlp(self.txt.lower())
         for token in doc:
             if(token.text in self.nlp.Defaults.stop_words or token.text in punctuation):
@@ -28,6 +45,16 @@ class TextAnalyzer():
                 result.append(token)
         result.sort(key=lambda x: x.vector_norm, reverse=True)
         return list(set([w.text for w in result[:n]]))
+
+    def get_keywords_yake(self, n, max_ngram=3):
+        result = []
+        
+        kw_extractor = yake.KeywordExtractor(
+            lan=self.language, n=max_ngram, dedupLim=0.9, top=n, features=None)
+        return kw_extractor.extract_keywords(self.txt)
+
+    def get_keywords_gensim(self):
+        return keywords(self.txt)
 
     def get_connected_keywords(self, n=10):
         self.nlp.add_pipe("textrank")
@@ -48,13 +75,34 @@ class TextAnalyzer():
             synonyms.extend(res)
         return synonyms
 
+    def get_similarity(self, orig, phrases, nwords=None):
+        phrase_similarity = []
+
+        for phrase in phrases:
+            doc2 = self.nlp(phrase)
+            p = self.orig_doc.similarity(doc2)
+
+            if p > self.thresh:
+                phrase_similarity.append([phrase, p])
+        
+        phrase_similarity.sort(key=lambda x: x[1], reverse=True)
+
+        if nwords and nwords < len(phrase_similarity):
+            phrase_similarity = phrase_similarity[:nwords]
+        return phrase_similarity
+
     def run(self):
-        kw = self.get_keywords(n=10)
-        syn = self.find_synonym_list(kw)
-        print(syn)
+        kw = self.get_keywords_yake(n=10)
+        kw2 = self.get_keywords_gensim().split('\n')
+        kw3 = self.get_keywords_spacy(n=10)
+        l = [w[0] for w in kw]
+        l.extend(kw2)
+        syn = self.find_synonym_list(l)
+        return self.get_similarity(kw, syn)
 
 
 if __name__ == "__main__":
     t = TextAnalyzer()
-    t.run()
+    output = t.run()
+    print(output)
 
