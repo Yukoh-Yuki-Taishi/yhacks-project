@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import SpeechRecognition, { useSpeechRecognition } from 'react-speech-recognition';
 import axios from 'axios';
+import Bubble from './Sugesstion';
 
 const Voice = () => {
  const [message, setMessage] = useState('');
@@ -19,6 +20,10 @@ const Voice = () => {
      command: 'Hello',
      callback: () => setMessage('Hi there!')
    },
+   {
+    command: 'show transcript',
+    callback: () => send(finalTranscript)
+  },
  ]
  const {
    transcript,
@@ -64,6 +69,8 @@ const Voice = () => {
 const queryObj = { transcript: 'Yuki' };
 // send(queryObj);
 
+const data = ["yuki", "yuki"];
+const i = 2;
 
  return (
    <div>
@@ -84,6 +91,7 @@ const queryObj = { transcript: 'Yuki' };
        {message}
        <br/>
        {ret}
+       <Bubble/>
      </div>
      <div>
        <span>{transcript}</span>
