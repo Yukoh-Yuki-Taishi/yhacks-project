@@ -1,8 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import SpeechRecognition, { useSpeechRecognition } from 'react-speech-recognition';
+import axios from 'axios';
 
 const Voice = () => {
  const [message, setMessage] = useState('');
+ const [ret, setRet] = useState("hello");
+
  const commands = [
    {
      command: 'reset',
@@ -35,7 +38,7 @@ const Voice = () => {
  }
 
  if (!SpeechRecognition.browserSupportsSpeechRecognition()) {
-   console.log('Your browser does not support speech recognition software! Try Chrome desktop, maybe?');
+   console.log('This only works on Chrome');
  }
  const listenContinuously = () => {
    SpeechRecognition.startListening({
@@ -43,6 +46,25 @@ const Voice = () => {
      language: 'en-GB',
    });
  };
+
+ const send = (t) => {
+     const toSend = { transcript: t };
+    axios.post('http://127.0.0.1:5000/test', toSend)
+    .then((response) => {
+            var result = response.data.Result; 
+            setRet(result)
+            // console.log(result)
+        },
+        (error) => {
+            console.log(error);
+        }
+    );
+}
+ 
+const queryObj = { transcript: 'Yuki' };
+// send(queryObj);
+
+
  return (
    <div>
      <div>
@@ -55,10 +77,13 @@ const Voice = () => {
          <button type="button" onClick={resetTranscript}>Reset</button>
          <button type="button" onClick={listenContinuously}>Listen</button>
          <button type="button" onClick={SpeechRecognition.stopListening}>Stop</button>
+         <button type="button" onClick={()=> send(finalTranscript)}>Send</button>
        </div>
      </div>
      <div>
        {message}
+       <br/>
+       {ret}
      </div>
      <div>
        <span>{transcript}</span>
