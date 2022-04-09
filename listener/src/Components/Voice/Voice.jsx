@@ -63,6 +63,22 @@ const Voice = () => {
       );
   }
 
+  // const summarize = (t) => {
+  //   SpeechRecognition.stopListening();
+
+  //   const toSend = { transcript: t };
+  //   axios.post('http://127.0.0.1:5000/summarize', toSend)
+  //     .then((response) => {
+  //       var result = response.data.Result;
+  //       setRet(result)
+  //       // console.log(result)
+  //     },
+  //       (error) => {
+  //         console.log(error);
+  //       }
+  //     );
+  // }
+
   const queryObj = { transcript: 'Yuki' };
   // send(queryObj);
   listenContinuously();
@@ -79,11 +95,11 @@ const Voice = () => {
 
       </div>
       <div>
-        <span>
+        {/* <span>
           listening:
           {' '}
           {listening ? "CURRENTLY RECORDING" : 'NOT RECORDING'}
-        </span>
+        </span> */}
         <div>
           <button type="button" onClick={resetTranscript}>RESET TRANSCRIPT</button>
           <button type="button" onClick={listenContinuously}>Listen</button>

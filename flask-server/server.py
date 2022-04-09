@@ -8,5 +8,10 @@ CORS(app)
 def test():
    return jsonify({"Result": request.json['transcript']})
  
+# @app.route('/summarize', methods =['POST'])
+# def summarize():
+# # call the summary function here to get the summary
+#    return jsonify({"Result": request.json['transcript']})
+
 if __name__ == '__main__':
     app.run(debug = True)
