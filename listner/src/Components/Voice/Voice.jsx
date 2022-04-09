@@ -69,9 +69,13 @@ const Voice = () => {
   return (
     <div>
       <div>
-        <Link to="/">Restart Meeting</Link>
-        <Link to="/suggestions">GET SUGGESTIONS</Link>
-        
+        {/* <Link to="/">Restart Meeting</Link> */}
+        <Link to="/suggestions">
+          <button>
+            GET SUGGESTIONS
+          </button>
+        </Link>
+
       </div>
       <div>
         <span>
@@ -82,7 +86,9 @@ const Voice = () => {
         <div>
           <button type="button" onClick={resetTranscript}>RESET TRANSCRIPT</button>
           <button type="button" onClick={listenContinuously}>Listen</button>
-          <button type="button" onClick={SpeechRecognition.stopListening}>END MEETING</button>
+          <Link to="/">
+            <button type="button" onClick={SpeechRecognition.stopListening}>END MEETING</button>
+          </Link>
           <button type="button" onClick={() => send(finalTranscript)}>Send</button>
         </div>
       </div>
