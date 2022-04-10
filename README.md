@@ -1,7 +1,6 @@
 # What Our App Does
-
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 ![alt text](https://i.ibb.co/ZgRMkPv/Agendaly-main.png)
+![alt text](https://i.ibb.co/r26rfkF/Agendaly-transcript.png)
 
 ## How to Run 
 -- Backend:
