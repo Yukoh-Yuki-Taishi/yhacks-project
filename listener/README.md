@@ -2,6 +2,20 @@
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
+## How to Run 
+-- Backend:
+```
+cd flask-server
+source env/bin/activate
+python3 server.py
+```
+
+-- Frontend:
+```
+cd listener
+npm start
+```
+
 ## Available Scripts
 
 In the project directory, you can run:
