@@ -1,14 +1,34 @@
+@keyframes dots {
+    0% {
+      content: ".";
+      color: white;
+      font-size: 20px;
+    }
+    33% {
+      content: "..";
+      color: #F3CAD2;
+    }
+    66% {
+      content: "...";
+      color: #F3CAD2;
+    }
+  }
+
 .listening {
+    /* animation-name: dots;
+    animation-duration:  1.25s;
+    animation-iteration-count:  infinite; */
+    
     position: absolute;
-    width: 91px;
-    height: 32px;
+    width: 270px;
+    height: 90px;
     left: 50%;
-    /* top: 37px; */
+    top: 37px;
 
     font-family: 'Kalam';
     font-style: normal;
     font-weight: 400;
-    font-size: 20px;
+    font-size: 50px;
     line-height: 32px;
     
     color: #F3CAD2;

@@ -63,45 +63,13 @@ const Voice = () => {
       );
   }
 
-  const summarize = (t) => {
-    SpeechRecognition.stopListening();
-
-    const toSend = { transcript: t };
-    axios.post('http://127.0.0.1:5000/summarize', toSend)
-      .then((response) => {
-        var result = response.data.Result;
-        setRet(result)
-        console.log(result)
-      },
-        (error) => {
-          console.log(error);
-        }
-      );
-  }
-
-  const suggest = (t) => {
-    // DELETE THIS LATER
-    SpeechRecognition.stopListening();
-
-    const toSend = { transcript: t };
-    axios.post('http://127.0.0.1:5000/suggest', toSend)
-      .then((response) => {
-        var result = response.data.Result;
-        setRet(result)
-        console.log(result)
-      },
-        (error) => {
-          console.log(error);
-        }
-      );
-  }
-
   const queryObj = { transcript: 'Yuki' };
   // send(queryObj);
   listenContinuously();
 
   return (
     <div style={{background: "#E4899B"}}>
+      <link href="https://fonts.googleapis.com/css2?family=Kalam:wght@700&family=Sriracha&display=swap" rel="stylesheet"/>
       <div>
         {/* <Link to="/">Restart Meeting</Link> */}
         <Link to="/suggestions">
@@ -112,21 +80,19 @@ const Voice = () => {
 
       </div>
       <div>
-        {/* <span>
+        <span>
           listening:
           {' '}
           {listening ? "CURRENTLY RECORDING" : 'NOT RECORDING'}
-        </span> */}
+        </span>
         <div>
           <button type="button" onClick={resetTranscript}>RESET TRANSCRIPT</button>
           <button type="button" onClick={listenContinuously}>Listen</button>
-          <Link to="/final">
+          <Link to= "/final" state = {finalTranscript}>
+          {/* <Link to= "/final"> */}
             <button type="button" onClick={SpeechRecognition.stopListening}>END MEETING</button>
           </Link>
-          <button type="button" onClick={() => summarize(finalTranscript)}>Summarize</button>
           <button type="button" onClick={() => send(finalTranscript)}>Send</button>
-          <button type="button" onClick={() => suggest(finalTranscript)}>GET SUGGESTIONS HERE</button>
-
         </div>
       </div>
       <div>
