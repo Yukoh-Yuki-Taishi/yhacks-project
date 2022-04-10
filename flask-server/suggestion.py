@@ -10,7 +10,11 @@ import pytextrank
 from nltk.corpus import wordnet
 from punctuator import Punctuator
 import nltk
+import re
+from gensim.summarization import summarize
 nltk.download("wordnet")
+nltk.download('punkt')
+nltk.download('stopwords')
 
 os.environ["SPACY_WARNING_IGNORE"] = "W008"
 warnings.filterwarnings("ignore", message=r"\[W008\]", category=UserWarning)
@@ -25,7 +29,7 @@ class TextAnalyzer():
                 with open("input.txt") as f:
                     txt = ' '.join(f.readlines())
             except Exception as e:
-                print("You must provide text or input.txt")
+                print("You must provide text or the input.txt file")
                 exit()
         self.txt = self.add_punctuation(txt)
         self._pos_tag = ['PROPN', 'ADJ', 'NOUN']
@@ -37,6 +41,9 @@ class TextAnalyzer():
             self.thresh = 0.01
         else:
             self.thresh = 0.005
+
+    def __str__(self):
+        return self.txt
 
     def add_punctuation(self, txt):
         p = Punctuator('models/Demo-Europarl-EN.pcl')
@@ -99,6 +106,17 @@ class TextAnalyzer():
             phrase_similarity = phrase_similarity[:nwords]
         return phrase_similarity
 
+    def summarize_txt(self, ratio=False, nwords=False):
+        txt = re.sub(r'\n|\r', '. ', self.txt)
+        txt = re.sub(r' +', ' ', txt)
+        txt = txt.strip()
+
+        if nwords:
+            return summarize(txt, word_count=nwords, split=False)
+        if not ratio:
+            ratio = 0.2
+        return summarize(txt, ratio=ratio, split=False)
+
     def run(self):
         kw = self.get_keywords_yake(n=10)
         kw2 = self.get_keywords_gensim().split('\n')
@@ -114,7 +132,8 @@ if __name__ == "__main__":
     txt = """
     your only chance of survival if you are sincerely smitten lies in hiding this fact from the woman you love of feigning a casual detachment under all circumstances what sadness there is in this simple observation what an accusation against man however it had never occurred to me to contest this law nor to imagine disobeying it love makes you weak and the weaker of the two is oppressed tortured and finally killed by the other who in his or her turn oppresses tortures and kills without having evil intentions without even getting pleasure from it with complete indifference that’s what men normally call love christ he thinks by my age I ought to know You don’t get on by being original you don’t get on by being bright You don’t get on by being strong You get on by being a subtle crook somehow he thinks that’s what Norris is and he feels an irrational dislike taking root and he tries to dismiss it because he prefers his dislikes rational but after all these circumstances are extreme the cardinal in the mud the humiliating tussle to get him back in the saddle the talking talking on the barge and worse the talking talking on his knees as if Wolsey’s unravelling in a great unweaving of scarlet thread that might lead you back into a scarlet labyrinth with a dying monster at its heart
     """
-    
+
     t = TextAnalyzer(txt=txt)
-    output = t.run()
+    print(str(t))
+    output = t.summarize_txt()
     print(output)
