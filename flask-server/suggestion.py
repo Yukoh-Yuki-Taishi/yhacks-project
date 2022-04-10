@@ -12,6 +12,7 @@ from punctuator import Punctuator
 import nltk
 import re
 from gensim.summarization import summarize
+
 nltk.download("wordnet")
 nltk.download('punkt')
 nltk.download('stopwords')
@@ -22,7 +23,11 @@ nltk.download('omw-1.4')
 
 
 class TextAnalyzer():
+    _id = 0
+
     def __init__(self, model="en_core_web_lg", txt=None, level=1):
+        self.id = TextAnalyzer._id
+        TextAnalyzer._id += 1
         self.nlp = spacy.load(model)
         if not txt:
             try:
@@ -38,18 +43,15 @@ class TextAnalyzer():
         if level == 1:
             self.thresh = 0.1
         if level == 2:
-            self.thresh = 0.01
+            self.thresh = 0.05
         else:
-            self.thresh = 0.005
+            self.thresh = 0.02
 
-    def __str__(self):
-        return self.txt
-
-    def add_punctuation(self, txt):
+    def add_punctuation(self, txt: str) -> list[str]:
         p = Punctuator('models/Demo-Europarl-EN.pcl')
         return p.punctuate(txt)
 
-    def get_keywords_spacy(self, n):
+    def get_keywords_spacy(self, n: int) -> list[str]:
         result = []
 
         doc = self.nlp(self.txt.lower())
@@ -61,14 +63,14 @@ class TextAnalyzer():
         result.sort(key=lambda x: x.vector_norm, reverse=True)
         return list(set([w.text for w in result[:n]]))
 
-    def get_keywords_yake(self, n, max_ngram=3):
+    def get_keywords_yake(self, n: int, max_ngram=3) -> list[str]:
         result = []
 
         kw_extractor = yake.KeywordExtractor(
             lan=self.language, n=max_ngram, dedupLim=0.9, top=n, features=None)
         return kw_extractor.extract_keywords(self.txt)
 
-    def get_keywords_gensim(self):
+    def get_keywords_gensim(self) -> list[str]:
         return keywords(self.txt)
 
     def get_connected_keywords(self, n=10):
@@ -76,7 +78,7 @@ class TextAnalyzer():
         doc = self.nlp(self.txt)
         return list(set([t.text.lower() for t in doc._.phrases[:n+1]]))
 
-    def _find_synonym(self, phrase):
+    def _find_synonym(self, phrase: str) -> list[str]:
         synonyms = []
         for syn in wordnet.synsets(phrase):
             for l in syn.lemmas():
@@ -90,7 +92,7 @@ class TextAnalyzer():
             synonyms.extend(res)
         return synonyms
 
-    def get_similarity(self, orig, phrases, nwords=None):
+    def get_similarity(self, orig: str, phrases: list[str], nwords=None) -> list[tuple]:
         phrase_similarity = []
 
         for phrase in phrases:
@@ -106,7 +108,7 @@ class TextAnalyzer():
             phrase_similarity = phrase_similarity[:nwords]
         return phrase_similarity
 
-    def summarize_txt(self, ratio=False, nwords=False):
+    def summarize_txt(self, ratio=False, nwords=False) -> str:
         txt = re.sub(r'\n|\r', '. ', self.txt)
         txt = re.sub(r' +', ' ', txt)
         txt = txt.strip()
@@ -116,6 +118,15 @@ class TextAnalyzer():
         if not ratio:
             ratio = 0.1
         return summarize(txt, ratio=ratio, split=False)
+
+    def __str__(self) -> str:
+        return self.txt
+
+    def __lt__(self, other: object) -> bool:
+        return self.id < other.id
+
+    def __eq__(self, other: object) -> bool:
+        return self.id == other.id
 
     def run(self):
         kw = self.get_keywords_yake(n=10)

@@ -2,7 +2,7 @@ from flask import Flask, jsonify, request
 from flask_cors import CORS
 from summarization import summarize_txt
 from suggestion import TextAnalyzer
-
+import sqlalchemy
 
 app = Flask(__name__)
 CORS(app)
@@ -28,16 +28,15 @@ def summarize():
 @app.route('/suggest', methods=['POST'])
 def suggest():
    # call the summary function here to get the summary
-   # txt = request.json['transcript']
-   # print("orig_txt: ", txt)
-   # t = TextAnalyzer(txt=txt)
-   # try:
-   #    suggestion = t.run()
-   # except Exception as e:
-   #    suggestion = "WARNING: you must have more than 10 sentences for us to summarize text"
-   # suggestion = list(set(suggestion))
-   # print(suggestion)
-   suggestion = ['o.k.', 'modern', 'routine', 'role', 'blue', 'slide', 'cease', 'operate', 'operate', 'memory', 'function', 'function', 'raw']
+   txt = request.json['transcript']
+   print("orig_txt: ", txt)
+   t = TextAnalyzer(txt=txt)
+   try:
+      suggestion = t.run()
+   except Exception as e:
+      suggestion = "WARNING: you must have more than 10 sentences for us to summarize text"
+   suggestion = list(set(suggestion))
+   print(suggestion)
    return jsonify({"Result": suggestion})
 
 
