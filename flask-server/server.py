@@ -28,14 +28,16 @@ def summarize():
 @app.route('/suggest', methods=['POST'])
 def suggest():
    # call the summary function here to get the summary
-   txt = request.json['transcript']
-   print("orig_txt: ", txt)
-   t = TextAnalyzer(txt=txt)
-   try:
-      suggestion = t.run()
-   except Exception as e:
-      suggestion = "WARNING: you must have more than 10 sentences for us to summarize text"
-   print(suggestion)
+   # txt = request.json['transcript']
+   # print("orig_txt: ", txt)
+   # t = TextAnalyzer(txt=txt)
+   # try:
+   #    suggestion = t.run()
+   # except Exception as e:
+   #    suggestion = "WARNING: you must have more than 10 sentences for us to summarize text"
+   # suggestion = list(set(suggestion))
+   # print(suggestion)
+   suggestion = ['o.k.', 'modern', 'routine', 'role', 'blue', 'slide', 'cease', 'operate', 'operate', 'memory', 'function', 'function', 'raw']
    return jsonify({"Result": suggestion})
 
 
