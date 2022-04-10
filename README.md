@@ -1,6 +1,7 @@
-# Getting Started with Create React App
+# What Our App Does
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+![alt text](https://ibb.co/PWs6fnJ)
 
 ## How to Run 
 -- Backend:
