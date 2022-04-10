@@ -5,11 +5,17 @@ import { Link } from "react-router-dom";
 import PrettyTextBox from "../Textbox/PrettyTextBox";
 import './PrettyButton.css';
 import './Voice.css';
+import './Balloon.css';
 
 const Voice = () => {
   const [message, setMessage] = useState('');
   const [ret, setRet] = useState("");
   const [suggestions, setSuggestions] = useState([]);
+
+  useEffect(() => {
+    listenContinuously();
+  }, []);
+
 
   const commands = [
     {
@@ -35,7 +41,7 @@ const Voice = () => {
 
   useEffect(() => {
     if (finalTranscript !== '') {
-      console.log('Got final result:', finalTranscript);
+      // console.log('Got final result:', finalTranscript);
     }
   }, [interimTranscript, finalTranscript]);
   if (!SpeechRecognition.browserSupportsSpeechRecognition()) {
@@ -66,6 +72,14 @@ const Voice = () => {
       );
   }
 
+  const listenOrPause = () => {
+    if (listening) {
+      SpeechRecognition.stopListening();
+    } else {
+      listenContinuously();
+    }
+  }
+
   const suggest = (t) => {
     // DELETE THIS LATER
     SpeechRecognition.stopListening();
@@ -87,54 +101,82 @@ const Voice = () => {
       );
   }
 
+
+
   const listItems = suggestions.map((d) => <li key={d}>hello</li>);
 
   const queryObj = { transcript: 'Yuki' };
   // send(queryObj);
-  listenContinuously();
+  // listenContinuously();
 
   return (
-    <div style={{background: "#E4899B"}}>
+    <div style={{width: '100%', background: "#E4899B"}}>
       <link href="https://fonts.googleapis.com/css2?family=Kalam:wght@700&family=Sriracha&display=swap" rel="stylesheet"/>
       <div>
         {/* <Link to="/">Restart Meeting</Link> */}
-        <Link to="/suggestions">
+        {/* <Link to="/suggestions">
           <button>
             GET SUGGESTIONS
           </button>
-        </Link>
+        </Link> */}
 
       </div>
       <div>
-        <span>
+        {/* <span>
           listening:
           {' '}
           {listening ? "CURRENTLY RECORDING" : 'NOT RECORDING'}
-        </span>
-        <div className="normal-button">
-          {/* <button type="button" onClick={resetTranscript}>RESET TRANSCRIPT</button> */}
-          <button type="button" className="normal-button" onClick={listenContinuously}>Listen</button>
-          <Link to= "/final" state = {finalTranscript}>
-          {/* <Link to= "/final"> */}
-            <button type="button" className="normal-button" onClick={SpeechRecognition.stopListening}>END MEETING</button>
-          </Link>
-          <button type="button" className="normal-button" onClick={() => send(finalTranscript)}>Send</button>
-          <button type="button" className="normal-button" onClick={() => suggest(finalTranscript)}>GET SUGGESTIONS HERE</button>
-        </div>
+        </span> */}
       </div>
       <div>
-        {message}
+        {/* {message} */}
         <br />
-        {ret}
+        {/* {ret} */}
         <br />
-        {suggestions[1]}
-        <p className = "listening">Listening...</p>
+        {/* {suggestions[1]} */}
+        <p className = "listening">{listening ? "Listening..." : 'Paused'}</p>
         <img src={"https://mir-s3-cdn-cf.behance.net/project_modules/max_1200/7ec86336581871.57215c53a5383.gif"}/>
       </div>
+      
       <div>
-        <span>{transcript}</span>
+          {/* <button type="button" onClick={resetTranscript}>RESET TRANSCRIPT</button> */}
+          <button type="button" className="normal-button" onClick={listenOrPause}
+          style ={{}}>{listening ? "Pause" : 'Listen'}</button>
+          <Link to= "/final" state = {{transcript: finalTranscript }}>
+            <button type="button" className="normal-button" onClick={SpeechRecognition.stopListening}>END MEETING</button>
+          </Link>
+          <button type="button" className="normal-button" onClick={() => send(finalTranscript)}>Show Transcript</button>
+          <button type="button" className="normal-button" onClick={() => suggest(finalTranscript)}>Show Suggestions</button>
+        </div>
+        <div class="container">
+        <div class="balloon">
+          <div><span>{suggestions[0]}</span></div>
+          <div><span>{suggestions[1]}</span></div>
+          <div><span>{suggestions[2]}</span></div>
+          <div><span>{suggestions[3]}</span></div>
+          <div><span>{suggestions[4]}</span></div>
+          <div><span>{suggestions[5]}</span></div>
+        </div>
+        <br/>
+        <br/>
+        <br/>
+        <br/>
+        <br/>
+        <br/>
+        <br/>
+        <div class="balloon">
+          <div><span>{suggestions[6]}</span></div>
+          <div><span>{suggestions[7]}</span></div>
+          <div><span>{suggestions[8]}</span></div>
+          <div><span>{suggestions[9]}</span></div>
+          <div><span>{suggestions[10]}</span></div>
+          <div><span>{suggestions[11]}</span></div>
+        </div>
+        </div>
+      <div>
+        <PrettyTextBox text ={transcript}/>
       </div>
-    </div>
+      </div>
   );
 };
 
