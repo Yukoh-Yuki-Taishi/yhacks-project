@@ -1,4 +1,3 @@
-from punctuator import Punctuator
 import warnings
 import os
 from gensim.summarization import keywords
@@ -9,6 +8,7 @@ from collections import Counter
 from string import punctuation
 import pytextrank
 from nltk.corpus import wordnet
+from punctuator import Punctuator
 import nltk
 nltk.download("wordnet")
 
