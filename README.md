@@ -1,5 +1,8 @@
 # What Our App Does
+## Listens to you and takes notes in a meeting 
 ![alt text](https://i.ibb.co/ZgRMkPv/Agendaly-main.png)
+
+## You can send the transcript and summary of your meeting to your email
 ![alt text](https://i.ibb.co/r26rfkF/Agendaly-transcript.png)
 
 ## How to Run 
