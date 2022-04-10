@@ -114,7 +114,7 @@ class TextAnalyzer():
         if nwords:
             return summarize(txt, word_count=nwords, split=False)
         if not ratio:
-            ratio = 0.2
+            ratio = 0.1
         return summarize(txt, ratio=ratio, split=False)
 
     def run(self):
