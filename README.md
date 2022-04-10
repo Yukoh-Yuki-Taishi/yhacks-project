@@ -2,6 +2,9 @@
 ## Listens to you and takes notes in a meeting 
 ![alt text](https://i.ibb.co/ZgRMkPv/Agendaly-main.png)
 
+## Gives you suggestions on topics to talk about
+![alt text](https://i.ibb.co/48JNw3p/Agendaly-suggest.png)
+
 ## You can send the transcript and summary of your meeting to your email
 ![alt text](https://i.ibb.co/r26rfkF/Agendaly-transcript.png)
 
